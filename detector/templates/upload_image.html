@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <!-- upload_image.html -->
+  <form method="post" enctype="multipart/form-data" action="{% url 'process_image' %}">
+    {% csrf_token %}
+    <input type="file" name="uploaded_image">
+    <button class="btn btn-primary" type="submit">Detect </button>
+  </form>
+
+
+
+  {% if results %}
+  <h3>Result</h3>
+  {% for result in results %}
+  <div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="{{ uploaded_image }}" alt="Uploaded Image" class="img-fluid rounded-start">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">Gender & Age Detected</h5>
+          <ul>
+            <li>Gender: {{ result.gender }}</li>
+            <li>Age: {{ result.age }} years</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% else %}
+  <div class="card border-danger mt-3" style="max-width: 18rem;">
+    <div class="card-header text-danger"><h4>Warning!</h4></div>
+    <div class="card-body">
+      <h5 class="card-title">No Image Selected</h5>
+      <p class="card-text">Please, choose and upload clear image with real faces to detect age and gender more precisely.</p>
+    </div>
+    {% endif %}
+  </div>
+
+  {% endblock %}
